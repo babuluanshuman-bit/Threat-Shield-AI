@@ -1,0 +1,34 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# VirusTotal v3 Proxy for Netlify
+[[redirects]]
+  from = "/api/virustotal/*"
+  to = "https://www.virustotal.com/api/v3/:splat"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
+
+# Gemini API Proxy for Netlify
+[[redirects]]
+  from = "/api/gemini/*"
+  to = "https://generativelanguage.googleapis.com/:splat"
+  status = 200
+  force = true
+
+# SPA Single Page App Route Fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
